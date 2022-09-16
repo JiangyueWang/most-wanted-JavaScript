@@ -72,8 +72,10 @@ function mainMenu(person, people) {
         case "family":
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            let personFamily = findPersonFamily(person[0], people);
-            alert(personFamily);
+            // let personFamily = findPersonFamily(person[0], people);
+            let personSpouse = findPersonSpouse(person[0], people)
+            alert(personSpouse)
+            // alert(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -154,6 +156,16 @@ function displayPerson(person) {
 }
 // End of displayPerson()
 
+function findPersonSpouse(person, people) {
+    let personSpouseId = parseInt(person.currentSpouse)
+    let personSpouseInfo = people.filter(function(person) {
+        if (person.id === personSpouseId) {
+            return true
+        }
+    })
+    let personSpouseFullName = personSpouseInfo[0].firstName + " " +personSpouseInfo[0].lastName;
+    return personSpouseFullName;
+}
 /**
  * This function's purpose is twofold:
  * First, to generate a prompt with the value passed in to the question parameter.
