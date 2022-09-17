@@ -138,15 +138,13 @@ function displayPeople(people) {
  * @param {Object} person       A singular object.
  */
 function displayPerson(person) {
-    console.log(person)
-    let personInfos;
+    // console.log(person)
+    let personInfos = "";
     // let personInfo = `First Name: ${person.firstName}\n`;
     // personInfo += `Last Name: ${person.lastName}\n`;
     //! TODO #1a: finish getting the rest of the information to display //////////////////////////////////////////
     for (const key in person) {
-        if (key !== "undefined"){
-            personInfos += `${key}: ${person[key]}\n`;
-        }
+        personInfos += `${key}: ${person[key]}\n`;
     }
     //console.log(personInfos);
     return personInfos;
