@@ -178,7 +178,6 @@ function findPersonParents(person, people) {
     if(personParentsIds[0] === undefined) {
         personParentsFullNames = "\nNo record of parents information"
     } else {
-        console.log("personParentsInfo", personParentsIds)
         for (let i = 0; i < personParentsIds.length; i++) {
             let personParent = people.filter(function(person) {
                 if(person.id === personParentsIds[i]) {
@@ -196,11 +195,10 @@ function findPersonParents(person, people) {
 
 function findPersonSiblings(person, people) {
     let personParents = person.parents;
-    
     let personId = person.id;
     let personSiblingsInfo = [];
     let personSiblingsFullNames = "";
-    if (personParents === []) {
+    if (personParents[0] === undefined) {
         personSiblingsFullNames = `${person.firstName} ${person.lastName} doesnt have any siblings`
     } else {
         for (let i = 0; i < personParents.length; i++) {
@@ -212,9 +210,14 @@ function findPersonSiblings(person, people) {
             personSiblingsInfo = [...peopleWithSameParents];
         }
     }
-    for (let i = 0; i < personSiblingsInfo.length; i++) {
+    if(personSiblingsInfo[0] === undefined) {
+        personSiblingsFullNames = `${person.firstName} ${person.lastName} doesnt have any siblings`
+    } else {
+        for (let i = 0; i < personSiblingsInfo.length; i++) {
         personSiblingsFullNames += `${person.firstName} ${person.lastName} sibling ${i+1} is ${personSiblingsInfo[i].firstName} ${personSiblingsInfo[i].lastName} \n`
+        }
     }
+    
 
     return personSiblingsFullNames;
 
