@@ -165,7 +165,7 @@ function findPersonSpouse(person, people) {
                 return true
             }
         })
-        personSpouseFullName = personSpouseInfo[0].firstName + personSpouseInfo[0].lastName
+        personSpouseFullName = `${person.firstName} ${person.lastName} currnet spouse: ${personSpouseInfo[0].firstName} ${personSpouseInfo[0].lastName}`
     }
     return personSpouseFullName;
 }
@@ -174,9 +174,11 @@ function findPersonParents(person, people) {
     let personParentsIds = person.parents;
     let personParentsFullNames = "";
     let personParentsInfo = [];
-    if (personParentsIds === 0) {
-        personParentsFullNames = "no record of parents information"
+    
+    if(personParentsIds[0] === undefined) {
+        personParentsFullNames = "\nNo record of parents information"
     } else {
+        console.log("personParentsInfo", personParentsIds)
         for (let i = 0; i < personParentsIds.length; i++) {
             let personParent = people.filter(function(person) {
                 if(person.id === personParentsIds[i]) {
@@ -185,18 +187,16 @@ function findPersonParents(person, people) {
             })
             personParentsInfo = [...personParentsInfo, ...personParent]
         }
-        
         for (let i = 0; i < personParentsInfo.length; i++) {
-            personParentsFullNames += `parenet ${i} full name: ${personParentsInfo[i].firstName} ${personParentsInfo[i].lastName} \n`
-        }    
+            personParentsFullNames += `${person.firstName} ${person.lastName} parenet ${i+1} full name: ${personParentsInfo[i].firstName} ${personParentsInfo[i].lastName} \n` 
+        }
     }
-
     return personParentsFullNames;
 }
 
 function findPersonSiblings(person, people) {
     let personParents = person.parents;
-    console.log(personParents)
+    
     let personId = person.id;
     let personSiblingsInfo = [];
     let personSiblingsFullNames = "";
@@ -213,7 +213,7 @@ function findPersonSiblings(person, people) {
         }
     }
     for (let i = 0; i < personSiblingsInfo.length; i++) {
-        personSiblingsFullNames += `${person.firstName} ${person.lastName}  sibling ${i+1} is ${personSiblingsInfo[i].firstName} ${personSiblingsInfo[i].lastName} \n`
+        personSiblingsFullNames += `${person.firstName} ${person.lastName} sibling ${i+1} is ${personSiblingsInfo[i].firstName} ${personSiblingsInfo[i].lastName} \n`
     }
 
     return personSiblingsFullNames;
