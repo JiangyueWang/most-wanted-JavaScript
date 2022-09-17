@@ -72,12 +72,8 @@ function mainMenu(person, people) {
         case "family":
             //! TODO #2: Declare a findPersonFamily function //////////////////////////////////////////
             // HINT: Look for a people-collection stringifier utility function to help
-            // let personFamily = findPersonFamily(person[0], people);
-            let personSpouse = findPersonSpouse(person[0], people)
-            let personParent = findPersonParents(person[0], people)
-            alert(personSpouse)
-            alert(personParent)
-            // alert(personFamily);
+            let personFamily = findPersonFamily(person[0], people);
+            alert(personFamily);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -196,6 +192,13 @@ function findPersonParents(person, people) {
     }
 
     return personParentsFullNames;
+}
+
+function findPersonFamily(person, people) {
+    let personSpouse = findPersonSpouse(person, people);
+    let personParent = findPersonParents(person, people);
+    let personFamily = personSpouse + "\n" + personParent;
+    return personFamily
 }
 /**
  * This function's purpose is twofold:
