@@ -157,13 +157,18 @@ function displayPerson(person) {
 // End of displayPerson()
 
 function findPersonSpouse(person, people) {
-    let personSpouseId = parseInt(person.currentSpouse)
-    let personSpouseInfo = people.filter(function(person) {
-        if (person.id === personSpouseId) {
-            return true
-        }
-    })
-    let personSpouseFullName = personSpouseInfo[0].firstName + " " +personSpouseInfo[0].lastName;
+    let personSpouseId = person.currentSpouse;
+    let personSpouseFullName = "";
+    if (person.currentSpouse === null) {
+        personSpouseFullName = `${person.firstName} ${person.lastName} does have a Spouse`;
+    } else {
+        let personSpouseInfo = people.filter(function(person) {
+            if(person.id === personSpouseId) {
+                return true
+            }
+        })
+        personSpouseFullName = personSpouseInfo[0].firstName + personSpouseInfo[0].lastName
+    }
     return personSpouseFullName;
 }
 /**
