@@ -194,10 +194,37 @@ function findPersonParents(person, people) {
     return personParentsFullNames;
 }
 
+function findPersonSiblings(person, people) {
+    let personParents = person.parents;
+    console.log(personParents)
+    let personId = person.id;
+    let personSiblingsInfo = [];
+    let personSiblingsFullNames = "";
+    if (personParents === []) {
+        personSiblingsFullNames = `${person.firstName} ${person.lastName} doesnt have any siblings`
+    } else {
+        for (let i = 0; i < personParents.length; i++) {
+            let peopleWithSameParents = people.filter(function(person) {
+                if(person.parents[i] === personParents[i] && person.id !== personId) {
+                    return true;
+                }
+            })
+            personSiblingsInfo = [...peopleWithSameParents];
+        }
+    }
+    for (let i = 0; i < personSiblingsInfo.length; i++) {
+        personSiblingsFullNames += `${person.firstName} ${person.lastName}  sibling ${i+1} is ${personSiblingsInfo[i].firstName} ${personSiblingsInfo[i].lastName} \n`
+    }
+
+    return personSiblingsFullNames;
+
+}
+
 function findPersonFamily(person, people) {
     let personSpouse = findPersonSpouse(person, people);
     let personParent = findPersonParents(person, people);
-    let personFamily = personSpouse + "\n" + personParent;
+    let personSibling = findPersonSiblings(person, people);
+    let personFamily = personSpouse + "\n" + personParent + "\n" + personSibling;
     return personFamily
 }
 /**
