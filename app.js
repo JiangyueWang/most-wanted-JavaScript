@@ -74,7 +74,9 @@ function mainMenu(person, people) {
             // HINT: Look for a people-collection stringifier utility function to help
             // let personFamily = findPersonFamily(person[0], people);
             let personSpouse = findPersonSpouse(person[0], people)
+            let personParent = findPersonParents(person[0], people)
             alert(personSpouse)
+            alert(personParent)
             // alert(personFamily);
             break;
         case "descendants":
@@ -170,6 +172,30 @@ function findPersonSpouse(person, people) {
         personSpouseFullName = personSpouseInfo[0].firstName + personSpouseInfo[0].lastName
     }
     return personSpouseFullName;
+}
+
+function findPersonParents(person, people) {
+    let personParentsIds = person.parents;
+    let personParentsFullNames = "";
+    let personParentsInfo = [];
+    if (personParentsIds === 0) {
+        personParentsFullNames = "no record of parents information"
+    } else {
+        for (let i = 0; i < personParentsIds.length; i++) {
+            let personParent = people.filter(function(person) {
+                if(person.id === personParentsIds[i]) {
+                    return true;
+                }
+            })
+            personParentsInfo = [...personParentsInfo, ...personParent]
+        }
+        
+        for (let i = 0; i < personParentsInfo.length; i++) {
+            personParentsFullNames += `parenet ${i} full name: ${personParentsInfo[i].firstName} ${personParentsInfo[i].lastName} \n`
+        }    
+    }
+
+    return personParentsFullNames;
 }
 /**
  * This function's purpose is twofold:
