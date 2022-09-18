@@ -249,9 +249,12 @@ function findPersonDescendants(person, people) {
 }
 
 function searchByTraits(people) {
-    let searchOption = prompt("enter 's' for single trait search or enter 'm' for multiple traits selection: ").toLocaleLowerCase()
+    let searchType = promptFor(
+        "enter 's' for single trait search or enter 'm' for multiple traits selection: ", singleOrMultiSearch
+        ).toLocaleLowerCase()
+    
     let searchResults;
-    switch(searchOption) {
+    switch(searchType) {
         case "s":
             let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search, e.g. gender: female")
             searchResults = searchBySingleTrait(singleTraitAndValueForSearch, people);
@@ -280,7 +283,9 @@ function searchBySingleTrait(trait, people) {
     }
     return results;
 }
-
+function singleOrMultiSearch(input) {
+    return input.toLowerCase() === "s" || input.toLowerCase() === "m";
+}
 /**
  * This function's purpose is twofold:
  * First, to generate a prompt with the value passed in to the question parameter.
