@@ -32,6 +32,7 @@ function app(people) {
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
             searchResults = searchByTraits(people);
+            alert(searchResults);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -246,6 +247,40 @@ function findPersonDescendants(person, people) {
     }
     return personDescendantsFullNames;    
 }
+
+function searchByTraits(people) {
+    let searchOption = prompt("enter 's' for single trait search or enter 'm' for multiple traits selection: ").toLocaleLowerCase()
+    let searchResults;
+    switch(searchOption) {
+        case "s":
+            let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search, e.g. gender: female")
+            searchResults = searchBySingleTrait(singleTraitAndValueForSearch, people);
+            break;
+        case "m":
+            searchResults = searchByMultiTraits(people);
+        default:
+            searchByTraits(people);
+            break;
+
+    }
+    return searchResults
+}
+
+function searchBySingleTrait(trait, people) {
+    let traitForSearch = trait.split(": ")[0];
+    let valueForTrait = trait.split(": ")[1];
+    let results = "";
+    let resultsArray = people.filter(function(people) {
+        if(people[traitForSearch] === valueForTrait) {
+            return true;
+        }
+    })
+    for (let i = 0; i < resultsArray.length; i++) {
+        results += `${i+1} met search criteria is ${resultsArray[i].firstName} ${resultsArray[i].lastName} with id ${resultsArray[i].id}\n`
+    }
+    return results;
+}
+
 /**
  * This function's purpose is twofold:
  * First, to generate a prompt with the value passed in to the question parameter.
