@@ -192,14 +192,16 @@ function chars(input) {
 
 //////////////////////////////////////////* End Of Starter Code *//////////////////////////////////////////
 // Any additional functions can be written below this line 👇. Happy Coding! 😁
-
+/**
+ * This function's purpose is to find selected person's Spouse information
+ */
 function findPersonSpouse(person, people) {
-    let personSpouseId = person.currentSpouse;
+    const personSpouseId = person.currentSpouse;
     let personSpouseFullName = "";
-    if (person.currentSpouse === null) {
+    if (person.currentSpouse === null || person.currentSpouse === undefined) {
         personSpouseFullName = `${person.firstName} ${person.lastName} does have a Spouse`;
     } else {
-        let personSpouseInfo = people.filter(function(person) {
+        const personSpouseInfo = people.filter(function(person) {
             if(person.id === personSpouseId) {
                 return true
             }
@@ -208,9 +210,11 @@ function findPersonSpouse(person, people) {
     }
     return personSpouseFullName;
 }
-
+/**
+ * This function's purpose is to find selected person's parents information
+ */
 function findPersonParents(person, people) {
-    let personParentsIds = person.parents;
+    const personParentsIds = person.parents;
     let personParentsFullNames = "";
     let personParentsInfo = [];
     
@@ -223,7 +227,7 @@ function findPersonParents(person, people) {
                     return true;
                 }
             })
-            personParentsInfo = [...personParentsInfo, ...personParent]
+            personParentsInfo = [...personParentsInfo, ...personParent];
         }
         for (let i = 0; i < personParentsInfo.length; i++) {
             personParentsFullNames += `${person.firstName} ${person.lastName} parenet ${i+1} full name: ${personParentsInfo[i].firstName} ${personParentsInfo[i].lastName} \n` 
@@ -231,10 +235,12 @@ function findPersonParents(person, people) {
     }
     return personParentsFullNames;
 }
-
+/**
+ * This function's purpose is to find selected person's siblings information
+ */
 function findPersonSiblings(person, people) {
-    let personParents = person.parents;
-    let personId = person.id;
+    const personParents = person.parents;
+    const personId = person.id;
     let personSiblingsInfo = [];
     let personSiblingsFullNames = "";
     if (personParents[0] === undefined) {
@@ -257,19 +263,22 @@ function findPersonSiblings(person, people) {
         }
     }
     
-
     return personSiblingsFullNames;
 
 }
-
+/**
+ * This function's purpose is to find selected person's family information, including the results from findPersonSpouse, findPersonParents and findPersonSiblings functions
+ */
 function findPersonFamily(person, people) {
-    let personSpouse = findPersonSpouse(person, people);
-    let personParent = findPersonParents(person, people);
-    let personSibling = findPersonSiblings(person, people);
-    let personFamily = personSpouse + "\n" + personParent + "\n" + personSibling;
-    return personFamily
+    const personSpouse = findPersonSpouse(person, people);
+    const personParent = findPersonParents(person, people);
+    const personSibling = findPersonSiblings(person, people);
+    const personFamily = personSpouse + "\n" + personParent + "\n" + personSibling;
+    return personFamily;
 }
-
+/**
+ * This function's purpose is to find selected person's Descendatns information
+ */
 function findPersonDescendants(person, people) {
     let personId = person.id;
     let personDescendantsFullNames = ""
@@ -300,7 +309,7 @@ function searchByTraits(people) {
             searchResults = searchBySingleTrait(singleTraitAndValueForSearch, people);
             break;
         case "m":
-            let multiTraitsValueForSearch = prompt("Please enter multiple traits and associated value for search with 'and' between traits, e.g. gender: female and eyeColor: brown, up to a amximum of five criteria at once:");
+            let multiTraitsValueForSearch = prompt("Please enter multiple traits and associated value for search with 'and' between traits,\ne.g., gender: female and eyeColor: brown\nheight: 76 and gender: male\nup to a amximum of five criteria at once:");
             searchResults = searchByMultiTraits(multiTraitsValueForSearch, people);
             break;
         default:
@@ -335,14 +344,19 @@ function searchByMultiTraits(traits, people) {
     const traitAndValuePairs = traits.split(" and ");
     // console.log(traitAndValuePairs) //['gender: female', 'eyeColor: brown', 'occupation: programmer']
     let results = "";
-    let resultsArray = people; 
+    let resultsArray = people;
+    let valueOfTraitSearch = "";
 
     if (traitAndValuePairs.length > 5) {
         results = "more than five criteria, failed search..."
     } else {
         for (let i = 0; i < traitAndValuePairs.length; i++) {
-            let singleTraitForSearch = traitAndValuePairs[i].split(": ")[0];
-            let valueOfTraitSearch = traitAndValuePairs[i].split(": ")[1];
+            const singleTraitForSearch = traitAndValuePairs[i].split(": ")[0];
+            if (singleTraitForSearch === "id" || singleTraitForSearch === "height" || singleTraitForSearch === "weight" || singleTraitForSearch === "currentSpouse") {
+                valueOfTraitSearch = parseInt(traitAndValuePairs[i].split(": ")[1]);
+            } else {
+                valueOfTraitSearch = traitAndValuePairs[i].split(": ")[1];
+            }
             resultsArray = searchResultArray(resultsArray, singleTraitForSearch, valueOfTraitSearch);
         }
     }
