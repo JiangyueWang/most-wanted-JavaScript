@@ -32,7 +32,7 @@ function app(people) {
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
                 //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
             searchResults = searchByTraits(people);
-            alert(searchResults);
+            // alert(searchResults);
             break;
         default:
             // Re-initializes the app() if neither case was hit above. This is an instance of recursion.
@@ -289,77 +289,74 @@ function findPersonDescendants(person, people) {
 }
 
 function searchByTraits(people) {
-    let searchType = promptFor(
+    const searchType = promptFor(
         "enter 's' for single trait search or enter 'm' for multiple traits selection: ", singleOrMultiSearch
         ).toLocaleLowerCase()
     
-    let searchResults;
+    let searchResults = [];
     switch(searchType) {
         case "s":
-            let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search, e.g. gender: female")
+            let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search\ne.g., gender: female")
             searchResults = searchBySingleTrait(singleTraitAndValueForSearch, people);
             break;
         case "m":
             let multiTraitsValueForSearch = prompt("Please enter multiple traits and associated value for search with 'and' between traits, e.g. gender: female and eyeColor: brown, up to a amximum of five criteria at once:");
             searchResults = searchByMultiTraits(multiTraitsValueForSearch, people);
+            break;
         default:
             searchByTraits(people);
             break;
 
     }
-    return searchResults
-}
-
-function searchBySingleTrait(trait, people) {
-    let traitForSearch = trait.split(": ")[0];
-    let valueForTrait = trait.split(": ")[1];
-    let results = "";
-    let resultsArray = people.filter(function(people) {
-        if(people[traitForSearch] === valueForTrait) {
-            return true;
-        }
-    })
-    for (let i = 0; i < resultsArray.length; i++) {
-        results += `${i+1} met search criteria is ${resultsArray[i].firstName} ${resultsArray[i].lastName} with id ${resultsArray[i].id}\n`
-    }
-    return results;
+    return searchResults;
 }
 function singleOrMultiSearch(input) {
     return input.toLowerCase() === "s" || input.toLowerCase() === "m";
 }
 
+function searchBySingleTrait(trait, people) {
+    const traitForSearch = trait.split(": ")[0];
+    const valueForTrait = trait.split(": ")[1];
+    const resultsArray = people.filter((people) => people[traitForSearch] === valueForTrait)
+
+    let results = ""
+    for (let i = 0; i < resultsArray.length; i++) {
+        results += `press ${i} to view details of ${resultsArray[i].firstName} ${resultsArray[i].lastName}\n`
+    }
+
+    const userSelectedNum = parseInt(prompt(results));
+    const userSelectPerson = people.filter((people) => people.id === resultsArray[userSelectedNum].id);
+    return userSelectPerson;
+    
+}
+
 function searchByMultiTraits(traits, people) {
-    console.log(traits)
-    let traitAndValuePairs = traits.split(" and ");
+    
+    const traitAndValuePairs = traits.split(" and ");
     // console.log(traitAndValuePairs) //['gender: female', 'eyeColor: brown', 'occupation: programmer']
     let results = "";
-    let resultsArray = [];
+    let resultsArray = people; 
 
     if (traitAndValuePairs.length > 5) {
         results = "more than five criteria, failed search..."
     } else {
         for (let i = 0; i < traitAndValuePairs.length; i++) {
             let singleTraitForSearch = traitAndValuePairs[i].split(": ")[0];
-            let valueOfTraitForSearch = traitAndValuePairs[i].split(": ")[1];
-            console.log(singleTraitForSearch);
-            console.log(valueOfTraitForSearch);
-            
-            let singleSearchResultArray = searchRecursion(people, singleTraitForSearch, valueOfTraitForSearch)
-            console.log(singleSearchResultArray)
-
+            let valueOfTraitSearch = traitAndValuePairs[i].split(": ")[1];
+            resultsArray = searchResultArray(resultsArray, singleTraitForSearch, valueOfTraitSearch);
         }
     }
-    
 
+    for (let i = 0; i < resultsArray.length; i++) {
+        results += `press ${i} to view details of ${resultsArray[i].firstName} ${resultsArray[i].lastName}\n`
+    }
+
+    const userSelectedNum = parseInt(prompt(results));
+    const userSelectPerson = people.filter((people) => people.id === resultsArray[userSelectedNum].id);
+    return userSelectPerson;
 }
 
-function searchRecursion(array, trait, value) {
-    //base case.....
-    //recursive case... the recursive function keep searching on the return arrays
-    let searchResult = array.filter(function(item) {
-        if (item[trait] === value) {
-            return true;
-        }
-    })
-    return searchArray(searchResult, trait, value)
+function searchResultArray(array, trait, value) {
+    const searchResult = array.filter(item =>  item[trait] === value)
+    return searchResult;
 }
