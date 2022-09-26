@@ -305,7 +305,7 @@ function searchByTraits(people) {
     let searchResults = [];
     switch(searchType) {
         case "s":
-            let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search\ne.g., gender: female")
+            let singleTraitAndValueForSearch = prompt("Please enter the trait and value for search\ne.g., gender: female\nheight: 76")
             searchResults = searchBySingleTrait(singleTraitAndValueForSearch, people);
             break;
         case "m":
@@ -325,7 +325,12 @@ function singleOrMultiSearch(input) {
 
 function searchBySingleTrait(trait, people) {
     const traitForSearch = trait.split(": ")[0];
-    const valueForTrait = trait.split(": ")[1];
+    let valueForTrait = ""
+    if (traitForSearch === "id" || traitForSearch === "height" || traitForSearch === "weight" || traitForSearch === "currentSpouse") {
+        valueForTrait = parseInt(trait.split(": ")[1]);
+    } else {
+        valueForTrait = trait.split(": ")[1];
+    }
     const resultsArray = people.filter((people) => people[traitForSearch] === valueForTrait)
 
     let results = ""
